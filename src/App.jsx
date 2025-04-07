@@ -21,9 +21,8 @@ function App() {
   });
 
   useEffect(() => {
-    window.localStorage.setItem("setSaveObject", JSON.stringify(options)),
-      [options];
-  });
+    window.localStorage.setItem("setSavedObject", JSON.stringify(options));
+  }, [options]);
 
   const updateFeedback = (feedbackType) => {
     setOptions({
@@ -31,14 +30,23 @@ function App() {
       [feedbackType]: options[feedbackType] + 1,
     });
 
-    if (feedbackType == "Reset") {
-      setOptions({
-        ...options,
-        good: (options.good = 0),
-        neutral: (options.neutral = 0),
-        bad: (options.bad = 0),
-      });
-    }
+    // if (feedbackType == "Reset") {
+    //   setOptions({
+    //     ...options,
+    //     good: (options.good = 0),
+    //     neutral: (options.neutral = 0),
+    //     bad: (options.bad = 0),
+    //   });
+    // }
+  };
+
+  const resetFeedback = () => {
+    setOptions({
+      ...options,
+      good: 0,
+      neutral: 0,
+      bad: 0,
+    });
   };
 
   const totalFeedback = options.good + options.neutral + options.bad;
@@ -47,7 +55,11 @@ function App() {
   return (
     <>
       <Description />
-      <Options updateFeedback={updateFeedback} total={totalFeedback} />
+      <Options
+        updateFeedback={updateFeedback}
+        total={totalFeedback}
+        resetFeedback={resetFeedback}
+      />
       {totalFeedback > 0 ? (
         <Feedback
           good={options.good}
